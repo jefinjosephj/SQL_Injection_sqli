@@ -1,0 +1,23 @@
+services:
+  web:
+    build: ./web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./web:/var/www/html
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: sqli_lab
+      MYSQL_USER: labuser
+      MYSQL_PASSWORD: labpass
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sqli_db.sql:/docker-entrypoint-initdb.d/sqli_db.sql:ro
+
+volumes:
+  mysql_data:
